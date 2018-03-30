@@ -22,13 +22,14 @@ dependencies {
 
 }
 
-mainClassName = 'MainDriver'
+mainClassName = 'edu.utk.mapreduce.MainDriver'
 
 run {
     // args are called "arams" because they are called with -P,
     // ex. gradle run -Params="['arg1', 'args2']"
     // see https://stackoverflow.com/questions/27604283/gradle-task-pass-arguments-to-java-application
-    if (project.hasProperty("arams")) {
-        args Eval.me(arams)
-    }
+//    if (project.hasProperty("arams")) {
+//        args Eval.me(arams)
+//    }
+    args = ["/home/kris/Desktop/test", "/home/kris/Desktop/test/output"]
 }
