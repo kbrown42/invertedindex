@@ -10,11 +10,6 @@ public class MainDriver {
 //        WordCountDriver wcDriver = new WordCountDriver();
 //        int countExitCode = ToolRunner.run(wcDriver, args);
 //
-//        // Using stop word list:
-//        //      Tokenize documents
-//        //      Remove stop words
-//        //      Write to inverted index (Reduce stage)
-//
 //        String[] stopWordsArgs = new String[2];
 //
 //        stopWordsArgs[0] = args[1];
@@ -27,7 +22,6 @@ public class MainDriver {
 //                                                stopWordsArgs);
 //        }
 //
-////        int exitCode = 0;
 //        System.exit(stopWordsExitCode);
 
         IndexDriver idxDriver = new IndexDriver();
