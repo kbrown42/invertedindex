@@ -30,6 +30,5 @@ The best match is found to be alls_well_that_ends_well.txt, line on line 54 and 
 <br /><br />
 
 # Extra credit:  Integrate queries with Spark
-(KRIS TODO)...
-
+We implemented a Spark program which is able to read in the inverted index file output by mapreduce and perform queries.  Both the Jupyter notebook and an accompanying html file are included here.  The html file is SparkIndexQuerying.html.  It's easiest to open that file in your browser rather than starting up a Jupyter notebook server.  
 
