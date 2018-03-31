@@ -1,6 +1,26 @@
 # invertedindex
 Inverted index with mapreduce
 
+#  Running the program
+
+To run the hadoop job to build the inverted index, start by cloning the repository:
+
+    git clone https://github.com/kbrown42/invertedindex.git
+
+Change directory into the repository.  We used gradle to handle our building and running.  So run:
+
+    ./gradlew build
+
+to build the project. Note: This requires Java 8 be installed on your machine. To run the script run: 
+
+    ./gradlew run -Param="['inputFilesDirectory', 'outputFilesDirectory']"
+    
+When it finishes, you should see something similar to: <br /><br />
+![Screenshot]( screen_shots/GradleRun.png )
+
+
+
+
 # Identifying and removing stop words
 For online search engines, 'stop word' detection is an important component for removing words that are considered noise as compared to the more meaningful words and phrases with pertinent meaning to the user. We address this issue in our work by implementing a stop words filter based on frequency of occurrence. In practice for the works of Shakespeare, we find that a filter of approximately 0.5% of total word count is sufficient for extracting less meaningful words from the data set. For example, words such as "a, all, and, be, but" are among the highest scoring occurrences for frequency. In total, while building the inverted search index, 370,264 stop words were removed.  We implemented some custom counters to track such metrics. This removal allows to system resources to do more meaningful computations in order to serve faster and higher quality results to the user. For convenience, we designed this module to output a list of the stop words which allows for easy review and application access to this list and also allowed us to compare our list to other commonly used stop word lists. 
 This approach also allows us to manually modify the 'scrubbing' process as needed by editing this file. Our list of applied stop words can be seen in the src/main/resources/stop_words.txt file. 
@@ -28,6 +48,7 @@ The inverted index pipeline is very similar:
 
 The outputs for a the word count job and the task that compiles a list of stop words can be seen in the `outputs` folder of this repository.  The inverted index can also be found there.
 
+We also made a couple of utilities and helpers for this project.  There is a `StopWordListReader` that takes in the stopwords.txt file and stores it as a HashSet that a mapper can use to filter out words efficiently.  We also made custom counters which can be found in `edu.utk.mapreduce.counters`. Finally, we made a custom `Writable` object that can be passed between mappers and reducers.  This is a simple class that stores the filename and file offset position for each term in the corpus.  This class can be found in `edu.utk.mapreduce.customtypes`.
 
 
 # Query the Inverted Index 

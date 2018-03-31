@@ -5,7 +5,7 @@ apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'application'
 
-sourceCompatibility = 1.9
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -28,8 +28,8 @@ run {
     // args are called "arams" because they are called with -P,
     // ex. gradle run -Params="['arg1', 'args2']"
     // see https://stackoverflow.com/questions/27604283/gradle-task-pass-arguments-to-java-application
-//    if (project.hasProperty("arams")) {
-//        args Eval.me(arams)
-//    }
-    args = ["/home/kris/Desktop/test", "/home/kris/Desktop/test/output"]
+    if (project.hasProperty("arams")) {
+        args Eval.me(arams)
+    }
+//    args = "['/home/kris/Desktop/test', '/home/kris/Desktop/test/output']"
 }
