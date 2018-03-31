@@ -19,3 +19,4 @@ src/main/resources/version.txt
 **/*.trace.db
 
 .idea/
+.ipynb_checkpoints/
