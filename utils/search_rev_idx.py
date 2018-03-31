@@ -44,6 +44,12 @@ def build_words_map(file_name):
             words_map[curr_word][curr_book].append(curr_offset)
 
 
+def most_common(list_in):
+    common_elm = max(set(list_in), key=list_in.count)
+    elm_count = list_in.count(common_elm)
+    return common_elm, elm_count
+
+
 def run_search(search_phrase, show_single_word_results=False):
 
     search_phrase = re.sub('[,.!?]', '', search_phrase)
@@ -70,6 +76,11 @@ def run_search(search_phrase, show_single_word_results=False):
             books_set_list.append(set(words_map[word].keys()))
 
     phrase_books_set = reduce(lambda x, y: x & y, books_set_list)
+
+    book_top_occurrence_name = ''
+    book_top_occurrence_count = 0
+    book_top_occurrence_offset = 0
+
     print "Books that contain each of the words in the phrase:"
     for s in list(phrase_books_set):
         # Build the occurrence locations for these phrase words in this book
@@ -77,9 +88,27 @@ def run_search(search_phrase, show_single_word_results=False):
         for w in valid_search_phrase_words:
             occurrence_locations.extend([int(x) for x in words_map[w][s]])
         occurrence_locations.sort()
+        curr_most_common_offset, curr_most_commond_occurance  = most_common(occurrence_locations)
+        if curr_most_commond_occurance > book_top_occurrence_count:
+            book_top_occurrence_name = s
+            book_top_occurrence_count = curr_most_commond_occurance
+            book_top_occurrence_offset = curr_most_common_offset
 
         print '\n {}'.format(s[:-4].upper())
         print ' Locations: {}'.format(occurrence_locations)
+
+    # Show winning excerpt
+    f = open(book_top_occurrence_name)
+    line_num = 0
+    while f.tell() < book_top_occurrence_offset:
+        l = f.readline()
+        line_num += 1
+    excerpt = f.readline()
+
+    print '-' * PAGE_WIDTH + '\n'
+    print 'WINNER: Search phrase in {}, line # {}:'.format(book_top_occurrence_name, line_num)
+    print "EXCERPT:"
+    print '\"' + excerpt.strip('\n') + '\"'
 
     print '-'*PAGE_WIDTH + '\n'
 
