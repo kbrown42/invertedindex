@@ -20,3 +20,4 @@ src/main/resources/version.txt
 
 .idea/
 .ipynb_checkpoints/
+./build/**
