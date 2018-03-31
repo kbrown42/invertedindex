@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 import click
 import re
+import numpy as np
 
 PAGE_WIDTH = 80
+np.set_printoptions(edgeitems=3)
+np.core.arrayprint._line_width = PAGE_WIDTH
 
 words_map = {}  # Dictionary of word occurances
 
@@ -27,7 +30,6 @@ def build_words_map(file_name):
         # Foreach word occurrence
         for c in curr_data[1:]:
             # Split the occurrence into [book_title, occurrence_offset]
-            # curr_book, curr_offset = re.sub('[<>]', '', c).split(',')[:2]
             curr_occurrence = re.sub('[<>]', '', c).split(',')
             if len(curr_occurrence) != 2:
                 continue
@@ -69,8 +71,9 @@ def run_search(search_phrase, show_single_word_results=False):
                 print '-'*PAGE_WIDTH
                 print "\'{}\' appears in:".format(word.upper())
                 for k, v in sorted(words_map[word].items()):
-                    print ' {}'.format(k[:-4].upper())
-                    print "\tAt locations: {}".format(sorted([int(x) for x in v]))
+                    print '{}, at locations:'.format(k[:-4].upper())
+                    col_formatted_locations = np.array(sorted([int(x) for x in v]))
+                    print "{}\n".format(col_formatted_locations)
                 print '-'*PAGE_WIDTH + '\n'
 
             books_set_list.append(set(words_map[word].keys()))
@@ -88,14 +91,15 @@ def run_search(search_phrase, show_single_word_results=False):
         for w in valid_search_phrase_words:
             occurrence_locations.extend([int(x) for x in words_map[w][s]])
         occurrence_locations.sort()
-        curr_most_common_offset, curr_most_commond_occurance  = most_common(occurrence_locations)
-        if curr_most_commond_occurance > book_top_occurrence_count:
+        curr_most_common_offset, curr_most_common_occurrence = most_common(occurrence_locations)
+        if curr_most_common_occurrence > book_top_occurrence_count:
             book_top_occurrence_name = s
-            book_top_occurrence_count = curr_most_commond_occurance
+            book_top_occurrence_count = curr_most_common_occurrence
             book_top_occurrence_offset = curr_most_common_offset
 
         print '\n {}'.format(s[:-4].upper())
-        print ' Locations: {}'.format(occurrence_locations)
+        col_formatted_locations = np.array(occurrence_locations)
+        print ' Locations:\n{}'.format(col_formatted_locations)
 
     # Show winning excerpt
     f = open(book_top_occurrence_name)
