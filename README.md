@@ -2,11 +2,27 @@
 Inverted index with mapreduce
 
 # Identifying and removing stop words
-For online search engines, 'stop word' detection is an important component for removing words that are considered noise as compared to the more meaningful words and phrases with pertinent meaning to the user. We address this issue in our work by implementing a stop words filter based on frequency of occurrence. In practice for the works of Shakespeare, we find that a filter of approximately 0.5% of total word count is sufficient for extracting less meaningful words from the data set. For example, words such as "a, all, and, be, but" are among the highest scoring occurrences for frequency. In total, while building the inverted search index, X [35k?, KRIS TODO] stop words were removed. This removal allows to system resources to do more meaningful computations in order to serve faster and higher quality results to the user. For convenience, we designed this module to output a list of the stop words which allows for easy review and application access to this list and also allowed us to compare our list to other commonly used stop word lists. 
+For online search engines, 'stop word' detection is an important component for removing words that are considered noise as compared to the more meaningful words and phrases with pertinent meaning to the user. We address this issue in our work by implementing a stop words filter based on frequency of occurrence. In practice for the works of Shakespeare, we find that a filter of approximately 0.5% of total word count is sufficient for extracting less meaningful words from the data set. For example, words such as "a, all, and, be, but" are among the highest scoring occurrences for frequency. In total, while building the inverted search index, X [35k?, KRIS TODO] stop words were removed.  We implemented some custom counters to track such metrics. This removal allows to system resources to do more meaningful computations in order to serve faster and higher quality results to the user. For convenience, we designed this module to output a list of the stop words which allows for easy review and application access to this list and also allowed us to compare our list to other commonly used stop word lists. 
 This approach also allows us to manually modify the 'scrubbing' process as needed by editing this file. Our list of applied stop words can be seen in the src/main/resources/stop_words.txt file. 
 
 # Building the Inverted Index 
-(KRIS TODO)...
+We decided to use Java for constructing and running the mapreduce jobs.  In addition, we used the build tool Gradle to manage dependencies and make running and testing very simple.  
+
+
+The inverted index program runs in three distinct pipeline stages.  Each stage is clearly separated out into its own class that implements the Hadoop class `Tool`.  This is a simple wrapper that makes running a job from a main function quite simple.  The three stages are: gather word counts, filter out stop words based on word frequency, and construct the index using the previously determined stop word list.  The drivers are located in the `edu.utk.mapreduce` package.    
+
+Our approach to building the inverted index was to create several mapper and reducer classes that are incredibly simple and easy to understand but perform primitive tasks that can be chained together.  This is easily accomplished by using the `ChainMapper` class in Hadoop.  For instance, our word count job looks like:
+
+    Tokenizer -> LowerCaser -> RegExFilter -> Counter -> SumReducer
+    
+The inverted index pipeline is very similar:
+
+    Tokenizer -> LowerCase -> RegExFilter -> StopWordsFilter -> IndexReducer
+    
+
+
+
+
 
 # Query the Inverted Index 
 This module serves as a general user interface for our search engine capabilities. It accepts a search phrase from the user and accesses the inverted index data in order to provide the user with the best match for file and line number of their query match. 

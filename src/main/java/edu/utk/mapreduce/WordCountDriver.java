@@ -44,10 +44,10 @@ public class WordCountDriver extends Configured implements Tool {
                 Text.class, Text.class, DocPosWritable.class, tokenizerConf);
 
         ChainMapper.addMapper(job, LowerCaseMapper.class, Text.class,
-                IntWritable.class, Text.class, IntWritable.class, lowerCaseConf);
+                DocPosWritable.class, Text.class, DocPosWritable.class, lowerCaseConf);
 
         ChainMapper.addMapper(job, RegExMapper.class, Text.class,
-                IntWritable.class, Text.class, IntWritable.class, regexConf);
+                DocPosWritable.class, Text.class, DocPosWritable.class, regexConf);
 
         ChainMapper.addMapper(job, CountMapper.class, Text.class,
                 DocPosWritable.class, Text.class, IntWritable.class, counterConf);
