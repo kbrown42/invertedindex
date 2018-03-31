@@ -7,4 +7,9 @@ This approach also allows us to manually modify the 'scrubbing' process as neede
 
 # Query the Inverted Index 
 This module serves as a general user interface for our search engine capabilities. It accepts a search phrase from the user and accesses the inverted index data in order to provide the user with the best match for file and line number of their query match. 
-Although excerpt extraction was not required for this project, we added this feature in order to showcase our systems ability to provide results to the user in a helpful manor while providing a more classical search engine experience. This search module checks each word of the phrase for occurrences and then uses set operations to find out where the phrase elements in totality occur together. Finally, the best phrase match for file and line number are provided, the information is extracted from the book and book excerpt is served to the user. Example queries and results are provided below. 
+Although excerpt extraction was not required for this project, we added this feature in order to showcase our systems ability to provide results to the user in a helpful manor while providing a more classical search engine experience. This search module checks each word of the phrase for occurrences and then uses set operations to find out where the phrase elements in totality occur together. Finally, the best phrase match for file and line number are provided, the information is extracted from the book and book excerpt is served to the user. <br />
+Example queries and results are provided below. <br />
+Example 1: User Query: "five wits went halting off" <br />
+In this example the phrase elements are found in MUCH_ADO_ABOUT_NOTHING, TWO_NOBLE_KINSMEN, HAMLET, and HISTORY_OF_TROILUS_AND_CRESSIDA. <br />
+The best match is found to be much_ado_about_nothing.txt on line 198 and the excerpt from the book is provided. <br />
+![Screenshot]( screen_shots/SearchExample_1.png )
