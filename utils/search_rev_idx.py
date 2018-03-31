@@ -52,7 +52,7 @@ def most_common(list_in):
     return common_elm, elm_count
 
 
-def run_search(search_phrase, show_single_word_results=False):
+def run_search(search_phrase, books_location, show_single_word_results=False):
 
     search_phrase = re.sub('[,.!?]', '', search_phrase)
     words = [x.lower() for x in search_phrase.split(' ')]
@@ -102,11 +102,20 @@ def run_search(search_phrase, show_single_word_results=False):
         print ' Locations:\n{}'.format(col_formatted_locations)
 
     # Show winning excerpt
-    f = open(book_top_occurrence_name)
+    try:
+        file_location = books_location + book_top_occurrence_name
+        f = open(file_location)
+    except IOError:
+        print "File not found: {}".format(file_location)
+        print "Try setting the --book_locations parameter or adding the book files."
+        return
+
     line_num = 0
+    # Figure out the proper line number
     while f.tell() < book_top_occurrence_offset:
         l = f.readline()
         line_num += 1
+
     excerpt = f.readline()
 
     print '-' * PAGE_WIDTH + '\n'
@@ -119,12 +128,13 @@ def run_search(search_phrase, show_single_word_results=False):
 
 @click.command()
 @click.option('--in_file', default='test.txt', help='Input file for reverse index.')
+@click.option('--books_location', default='../data/', help='Directory location for books.')
 @click.option('--search_phrase', default=None, help='Phrase to search.')
 @click.option('--show_words/--no_show_words', default=False, help='Show the list of words in the reverse index.')
 @click.option('--show_single_word_results/--no_show_single_word_results', default=False,
               help='Show occurrence results for the single words in a multi-word phrase.')
 # @click.argument('search_phrase')
-def search_word_map(in_file, search_phrase, show_words, show_single_word_results):
+def search_word_map(in_file, books_location, search_phrase, show_words, show_single_word_results):
     # click.echo('Starting...')
 
     print "in_file = {}\n".format(in_file)
@@ -133,7 +143,7 @@ def search_word_map(in_file, search_phrase, show_words, show_single_word_results
     build_words_map(in_file)
 
     if search_phrase is not None:
-        run_search(search_phrase, show_single_word_results)
+        run_search(search_phrase, books_location, show_single_word_results)
 
     if show_words:
         print "\n\n" + '-'*PAGE_WIDTH
