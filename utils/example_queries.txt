@@ -1,0 +1,10 @@
+
+
+EXAMPLE 1:
+./search_rev_idx.py --in_file '../part-r-00000' --search_phrase "five wits went halting off"
+
+EXAMPLE 2:
+./search_rev_idx.py --in_file '../part-r-00000' --search_phrase "The worm is not to be trusted"
+
+EXAMPLE 3:
+./search_rev_idx.py --in_file '../part-r-00000' --search_phrase "knowledge against mortality"
